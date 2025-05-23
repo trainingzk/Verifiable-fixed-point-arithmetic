@@ -9,6 +9,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+plt.rcParams.update({
+    'font.family': 'Times New Roman',
+    # 'font.size': 24,
+    # 'axes.titlesize': 26,
+    # 'axes.labelsize': 24,
+    # 'xtick.labelsize': 16,
+    # 'ytick.labelsize': 16,
+    # 'legend.fontsize': 16
+})
+
+
 precision_list = [8, 8, 16, 16, 32, 32, 64, 64] # The number of bits to be removed (also known as s)
 mantisa_list = [6, 14, 14, 30, 30, 62, 62, 126] # The number of bits in integer. We assume each number after multiplicaiton is representable in fixed-point mode
 
@@ -124,6 +135,12 @@ axes.set_yscale("log")
 axes.set_ylim([0.0005, 250]) 
 ax2.set_ylabel("Communication Cost (KB)") 
 ax2.set_ylim([0, 5]) 
+
+# Adjust the layout
+plt.tight_layout()
+
+# Save the plot to PDF (adjust the filename as needed)
+plt.savefig('Figure_2_v2.pdf', format='pdf')
 
 plt.show() 
 
