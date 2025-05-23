@@ -2,11 +2,22 @@ import time
 import random
 import MatMul_renov as MatMul 
 import Useful_functions as aux
-from keras.datasets import mnist 
+# from keras.datasets import mnist 
 from Aggregated_range_proof import aggregated_range_proof 
 import random 
 import matplotlib.pyplot as plt 
 import numpy as np
+
+plt.rcParams.update({
+    'font.family': 'Times New Roman',
+    # 'font.size': 24,
+    # 'axes.titlesize': 26,
+    # 'axes.labelsize': 24,
+    # 'xtick.labelsize': 16,
+    # 'ytick.labelsize': 16,
+    # 'legend.fontsize': 16
+})
+
 
 
 # precision_list_ours = [32, 32, 32, 32, 32, 32] # The number of bits to be removed (also known as s)
@@ -124,37 +135,43 @@ labels = labels[0:len(communications_sum_check)]
 
 import pandas as pd
 plotdata_p = pd.DataFrame({
-    "Ours":[prover_sum_check_times[i] + prover_range_proof_times[i] + prover_MLE_times[i] for i in range(len(prover_sum_check_times))],
-    "Tha":[GKR_prover_sum_check_times[i] + GKR_prover_MLE_times[i] for i in range(len(GKR_prover_sum_check_times))]}, 
+    "Proposed method":[prover_sum_check_times[i] + prover_range_proof_times[i] + prover_MLE_times[i] for i in range(len(prover_sum_check_times))],
+    "SOTA":[GKR_prover_sum_check_times[i] + GKR_prover_MLE_times[i] for i in range(len(GKR_prover_sum_check_times))]}, 
     index=labels) 
 
 plotdata_v = pd.DataFrame({
-    "Ours":[verifier_sum_check_times[i] + verifier_range_proof_times[i] + verifier_MLE_times[i] for i in range(len(verifier_sum_check_times))],
-    "Tha":[GKR_verifier_sum_check_times[i] + GKR_verifier_MLE_times[i] for i in range(len(GKR_verifier_sum_check_times))]},
+    "Proposed method":[verifier_sum_check_times[i] + verifier_range_proof_times[i] + verifier_MLE_times[i] for i in range(len(verifier_sum_check_times))],
+    "SOTA":[GKR_verifier_sum_check_times[i] + GKR_verifier_MLE_times[i] for i in range(len(GKR_verifier_sum_check_times))]},
     index=labels) 
 
 plotdata_c = pd.DataFrame({
-    "Ours":[(communications_sum_check[i] + communications_range_proof[i]) / 8000 for i in range(len(communications_sum_check))],
-    "Tha":[(GKR_communications_sum_check[i]) / 8000 for i in range(len(GKR_communications_sum_check))]},
+    "Proposed method":[(communications_sum_check[i] + communications_range_proof[i]) / 8000 for i in range(len(communications_sum_check))],
+    "SOTA":[(GKR_communications_sum_check[i]) / 8000 for i in range(len(GKR_communications_sum_check))]},
     index=labels) 
 
 fig, axes = plt.subplots(nrows=1, ncols=3) 
 fig.tight_layout() 
 plotdata_p.plot(kind='bar', stacked=False, ax=axes[0])  
-axes[0].set_xlabel("Multiplication Depth") 
+axes[0].set_xlabel("# of layers") 
 axes[0].set_ylabel("Time (s)") 
 # axes[0].set_yscale("log")  
 axes[0].set_title("Prover") 
 plotdata_v.plot(kind='bar', stacked=False, ax=axes[1])  
-axes[1].set_xlabel("Multiplication Depth")
+axes[1].set_xlabel("# of layers")
 axes[1].set_ylabel("Time (s)")
 # axes[1].set_yscale("log")
 axes[1].set_title("Verifier") 
 plotdata_c.plot(kind='bar', stacked=False, ax=axes[2])  
-axes[2].set_xlabel("Multiplication Depth")
+axes[2].set_xlabel("# of layers")
 axes[2].set_ylabel("Communication Cost (KB)") 
 # axes[2].set_yscale("log")
 axes[2].set_title("Communication")
+
+# Adjust the layout
+plt.tight_layout()
+
+# Save the plot to PDF (adjust the filename as needed)
+plt.savefig('Figure_3_v1.pdf', format='pdf')
 
 plt.show() 
 
